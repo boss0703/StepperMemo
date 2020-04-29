@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">StepperMemo</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home_tab">Home</string>
+    <string name="profile_tab">Profile</string>
+    <string name="date_label">日付</string>
+    <string name="count_label">回数</string>
+    <string name="time_label">時間</string>
+    <string name="memo_label">備考</string>
+    <string name="create_button">作成</string>
+    <string name="cancel_button">キャンセル</string>
+</resources>
