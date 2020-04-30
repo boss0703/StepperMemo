@@ -8,9 +8,9 @@ class CustomApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         Realm.init(this)
-//        val config = RealmConfiguration.Builder().build()
+        val config = RealmConfiguration.Builder().build()
         // Realmのモデルクラスを変更した場合
-        val config = RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build()
+//        val config = RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build()
         Realm.setDefaultConfiguration(config)
     }
 }

@@ -2,6 +2,7 @@ package com.example.steppermemo
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
@@ -73,6 +74,12 @@ class EditActivity : AppCompatActivity() {
                     finish()
                 }
             }
+        }
+
+        // キャンセルボタン押下時
+        cancel_button.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 

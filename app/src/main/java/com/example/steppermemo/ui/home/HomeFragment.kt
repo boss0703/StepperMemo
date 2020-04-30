@@ -7,7 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.steppermemo.R
+import com.example.steppermemo.StepperMemo
+import io.realm.Realm
+import io.realm.Sort
+import kotlinx.android.synthetic.main.fragment_home.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,17 +29,20 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var realm: Realm
+    private lateinit var adapter: HomeFragmentRecyclerViewAdapter
+    private lateinit var layoutManager: RecyclerView.LayoutManager
 //    private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+//        arguments?.let {
+//            param1 = it.getString(ARG_PARAM1)
+//            param2 = it.getString(ARG_PARAM2)
+//        }
+        // 追加
+        realm = Realm.getDefaultInstance()
+
     }
 
     override fun onCreateView(
@@ -53,7 +62,21 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-//    // TODO: Rename method, update argument and hook method into UI event
+    override fun onStart() {
+        super.onStart()
+        val realmResults = realm.where(StepperMemo::class.java).findAll().sort("id", Sort.DESCENDING)
+        layoutManager = LinearLayoutManager(activity!!)
+        recyclerView.layoutManager = layoutManager
+
+        adapter = HomeFragmentRecyclerViewAdapter(realmResults)
+        recyclerView.adapter = this.adapter
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
+    }
+
 //    fun onButtonPressed(uri: Uri) {
 //        listener?.onFragmentInteraction(uri)
 //    }
@@ -84,7 +107,6 @@ class HomeFragment : Fragment() {
 //     * for more information.
 //     */
 //    interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
 //        fun onFragmentInteraction(uri: Uri)
 //    }
 //
@@ -97,7 +119,6 @@ class HomeFragment : Fragment() {
 //         * @param param2 Parameter 2.
 //         * @return A new instance of fragment HomeFragment.
 //         */
-//        // TODO: Rename and change types and number of parameters
 //        @JvmStatic
 //        fun newInstance(param1: String, param2: String) =
 //            HomeFragment().apply {
