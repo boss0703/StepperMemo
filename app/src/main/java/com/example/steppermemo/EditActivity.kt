@@ -32,6 +32,22 @@ class EditActivity : AppCompatActivity() {
         np2.maxValue = 59
         np2.value = 30
 
+        val bpId = intent.getLongExtra("id", 0L)
+        // intentに値が入っていた場合(one_resultを押下した場合の遷移)
+        if (bpId > 0L){
+            val stepperMemo = realm.where<StepperMemo>().equalTo("id", bpId).findFirst()
+            editDate.setText(stepperMemo?.date.toString())
+            editCount.setText(stepperMemo?.count.toString())
+            // 20:30のような時間文字列をフォーマットしてそれぞれ値をセットする
+            val npMap = stepperMemo?.time.toString().split(":").map {it.trim()}
+            np1.value = npMap[0].toInt()
+            np2.value = npMap[1].toInt()
+            editMemo.setText(stepperMemo?.memo.toString())
+            create_button.text = "更新"
+        } else {
+            create_button.text = "作成"
+        }
+
         // 日付のEditView押下時
         editDate.setOnClickListener {
             val calender = Calendar.getInstance()
@@ -40,8 +56,8 @@ class EditActivity : AppCompatActivity() {
             val day = calender.get(Calendar.DAY_OF_MONTH)
             val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener{ _, y, m, d ->
                 val dayOfTheWeek = UtilCalendar().getDayOfTheWeek(y,m,d)
-                Toast.makeText(this, "日付を選択しました ${y}/${m}/${d} $dayOfTheWeek", Toast.LENGTH_LONG).show()
-                editDate.setText("${y}/${m}/${d} $dayOfTheWeek", TextView.BufferType.NORMAL)
+                Toast.makeText(this, "日付を選択しました ${y}/${m + 1}/${d} $dayOfTheWeek", Toast.LENGTH_LONG).show()
+                editDate.setText("${y}/${m + 1}/${d} $dayOfTheWeek", TextView.BufferType.NORMAL)
             }, year,month,day
             )
             dpd.show()
@@ -58,19 +74,40 @@ class EditActivity : AppCompatActivity() {
                     editCount.error = "入力が必須です"
                 }
                 else -> {
-                    realm.executeTransaction {
-                        val maxId = realm.where<StepperMemo>().max("id")
-                        val nextId = (maxId?.toLong() ?: 0L) +1L
-                        val stepperMemo = realm.createObject<StepperMemo>(nextId)
-                        stepperMemo.date = editDate.text.toString()
-                        stepperMemo.count = editCount.text.toString().toLong()
-                        stepperMemo.time = "${np1.value}:${np2.value}"
-                        // 消費kcalの計算式は 体重 * 0.094 * 時間(分) * 補正係数
-                        // 補正係数は 男性 20代 1.0 30代 0.96 40代 0.94 女性 20代 0.95 30代 0.87 40代 0.85
-                        stepperMemo.kcal = 90.0 * 0.094 * (np1.value.toDouble() + np2.value.toDouble() / 60) * 1.0
-                        stepperMemo.memo = editMemo.text.toString()
+
+                    when(bpId) {
+                        0L -> {
+                            realm.executeTransaction {
+                                val maxId = realm.where<StepperMemo>().max("id")
+                                val nextId = (maxId?.toLong() ?: 0L) + 1L
+                                val stepperMemo = realm.createObject<StepperMemo>(nextId)
+                                stepperMemo.date = editDate.text.toString()
+                                stepperMemo.count = editCount.text.toString().toLong()
+                                stepperMemo.time = "${np1.value}:${np2.value}"
+                                // 消費kcalの計算式は 体重 * 0.094 * 時間(分) * 補正係数
+                                // 補正係数は 男性 20代 1.0 30代 0.96 40代 0.94 女性 20代 0.95 30代 0.87 40代 0.85
+                                stepperMemo.kcal =
+                                    90.0 * 0.094 * (np1.value.toDouble() + np2.value.toDouble() / 60) * 1.0
+                                stepperMemo.memo = editMemo.text.toString()
+                                Toast.makeText(this, "保存しました", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        // 更新処理
+                        else -> {
+                            realm.executeTransaction {
+                                val stepperMemo = realm.where<StepperMemo>().equalTo("id", bpId).findFirst()
+                                stepperMemo?.date = editDate.text.toString()
+                                stepperMemo?.count = editCount.text.toString().toLong()
+                                stepperMemo?.time = "${np1.value}:${np2.value}"
+                                // 消費kcalの計算式は 体重 * 0.094 * 時間(分) * 補正係数
+                                // 補正係数は 男性 20代 1.0 30代 0.96 40代 0.94 女性 20代 0.95 30代 0.87 40代 0.85
+                                stepperMemo?.kcal =
+                                    90.0 * 0.094 * (np1.value.toDouble() + np2.value.toDouble() / 60) * 1.0
+                                stepperMemo?.memo = editMemo.text.toString()
+                                Toast.makeText(this, "更新しました", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
-                    Toast.makeText(this, "保存しました", Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }

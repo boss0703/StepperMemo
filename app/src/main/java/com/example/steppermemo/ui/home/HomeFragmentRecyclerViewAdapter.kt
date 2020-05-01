@@ -29,7 +29,6 @@ RecyclerView.Adapter<HomeFragmentViewHolder>(){
         holder.dateText?.text = stepperMemo?.date.toString()
         holder.countText?.text = "${stepperMemo?.count.toString()}回"
         holder.timeText?.text = stepperMemo?.time.toString()
-//        holder.kcalText?.text = stepperMemo?.kcal.toString()
         holder.kcalText?.text = "%.1f".format(stepperMemo?.kcal)
         holder.memoText?.text = stepperMemo?.memo.toString()
         // 交互に背景色変更
