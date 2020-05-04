@@ -116,7 +116,7 @@ class EditActivity : AppCompatActivity() {
         // キャンセルボタン押下時
         cancel_button.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            finish()
         }
     }
 
