@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.Toast
 import com.example.steppermemo.util.UtilCalendar
@@ -31,6 +32,8 @@ class EditActivity : AppCompatActivity() {
         np2.minValue = 0
         np2.maxValue = 59
         np2.value = 30
+        // NumberPickerの2桁表示
+        np2.setFormatter(NumberPicker.Formatter { String.format("%02d", it) })
 
         val bpId = intent.getLongExtra("id", 0L)
         // intentに値が入っていた場合(one_resultを押下した場合の遷移)
