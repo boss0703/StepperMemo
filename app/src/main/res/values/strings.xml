@@ -13,4 +13,5 @@
     <string name="create_button">作成</string>
     <string name="cancel_button">キャンセル</string>
     <string name="kcal_label">kcal</string>
+    <string name="delete_button">削除</string>
 </resources>

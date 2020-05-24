@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.Toast
@@ -49,6 +50,7 @@ class EditActivity : AppCompatActivity() {
             create_button.text = "更新"
         } else {
             create_button.text = "作成"
+            delete_button.visibility = View.INVISIBLE
         }
 
         // 日付のEditView押下時
@@ -114,6 +116,15 @@ class EditActivity : AppCompatActivity() {
                     finish()
                 }
             }
+        }
+
+        // 削除ボタン押下時
+        delete_button.setOnClickListener{
+            realm.executeTransaction {
+                realm.where<StepperMemo>().equalTo("id", bpId)?.findFirst()?.deleteFromRealm()
+            }
+            Toast.makeText(this, "削除しました", Toast.LENGTH_SHORT).show()
+            finish()
         }
 
         // キャンセルボタン押下時
