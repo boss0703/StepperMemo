@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnFragmentInteractionList
 
         // pager(横スライド画面変更)の設定
         // fragmentの呼び出しはTabAdapter内で行っている
-        pager.adapter = TabAdapter(supportFragmentManager,this)
+        pager.adapter = TabAdapter(supportFragmentManager)
         // pagerとタブレイアウトの紐づけ
         tab_layout.setupWithViewPager(pager)
         // タブレイアウトのアイコン設定
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnFragmentInteractionList
         realm = Realm.getDefaultInstance()
 
         // FABボタン押下時の処理
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener {
             val intent = Intent(this, EditActivity::class.java)
             startActivity(intent)
         }

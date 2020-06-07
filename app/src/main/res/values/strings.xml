@@ -12,4 +12,6 @@
     <string name="cancel_button">キャンセル</string>
     <string name="kcal_label">kcal</string>
     <string name="delete_button">削除</string>
+    <string name="colon">:</string>
+    <string name="delete_description">メモを削除します。</string>
 </resources>

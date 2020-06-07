@@ -16,8 +16,7 @@ RecyclerView.Adapter<HomeFragmentViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): HomeFragmentViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.one_result, parent, false)
-        val viewholder = HomeFragmentViewHolder(view)
-        return viewholder
+        return HomeFragmentViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -27,9 +26,11 @@ RecyclerView.Adapter<HomeFragmentViewHolder>(){
     override fun onBindViewHolder(holder: HomeFragmentViewHolder, position: Int) {
         val stepperMemo = rResults[position]
         holder.dateText?.text = stepperMemo?.date.toString()
-        holder.countText?.text = "${stepperMemo?.count.toString()}回"
+        val countText = stepperMemo?.count.toString() + "回"
+        holder.countText?.text = countText
         holder.timeText?.text = stepperMemo?.time.toString()
-        holder.kcalText?.text = "%.1f".format(stepperMemo?.kcal)
+        val kcalText = "%.1f".format(stepperMemo?.kcal)
+        holder.kcalText?.text = kcalText
         holder.memoText?.text = stepperMemo?.memo.toString()
         // 交互に背景色変更
         holder.itemView.setBackgroundColor(if (position % 2 == 0) Color.LTGRAY else Color.WHITE)
