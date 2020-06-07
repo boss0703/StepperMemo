@@ -1,15 +1,18 @@
 package com.example.steppermemo
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.example.steppermemo.ui.home.HomeFragment
+import com.example.steppermemo.ui.profile.ProfileFragment
 import io.realm.Realm
 
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), HomeFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener {
     private lateinit var realm: Realm
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 //        fragmentTransaction.commit()
 
         // pager(横スライド画面変更)の設定
+        // fragmentの呼び出しはTabAdapter内で行っている
         pager.adapter = TabAdapter(supportFragmentManager,this)
         // pagerとタブレイアウトの紐づけ
         tab_layout.setupWithViewPager(pager)
@@ -62,4 +66,9 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    override fun onFragmentInteraction(uri: Uri) {
+        // Do Nothing
+    }
+
 }

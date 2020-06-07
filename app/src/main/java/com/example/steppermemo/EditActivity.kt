@@ -34,7 +34,7 @@ class EditActivity : AppCompatActivity() {
         np2.maxValue = 59
         np2.value = 30
         // NumberPickerの2桁表示
-        np2.setFormatter(NumberPicker.Formatter { String.format("%02d", it) })
+        np2.setFormatter { String.format("%02d", it) }
 
         val bpId = intent.getLongExtra("id", 0L)
         // intentに値が入っていた場合(one_resultを押下した場合の遷移)
@@ -43,6 +43,7 @@ class EditActivity : AppCompatActivity() {
             editDate.setText(stepperMemo?.date.toString())
             editCount.setText(stepperMemo?.count.toString())
             // 20:30のような時間文字列をフォーマットしてそれぞれ値をセットする
+            // TODO util化を考える
             val npMap = stepperMemo?.time.toString().split(":").map {it.trim()}
             np1.value = npMap[0].toInt()
             np2.value = npMap[1].toInt()
@@ -91,6 +92,7 @@ class EditActivity : AppCompatActivity() {
                                 stepperMemo.time = "${np1.value}:${np2.value}"
                                 // 消費kcalの計算式は 体重 * 0.094 * 時間(分) * 補正係数
                                 // 補正係数は 男性 20代 1.0 30代 0.96 40代 0.94 女性 20代 0.95 30代 0.87 40代 0.85
+                                // TODO util化を考える
                                 stepperMemo.kcal =
                                     90.0 * 0.094 * (np1.value.toDouble() + np2.value.toDouble() / 60) * 1.0
                                 stepperMemo.memo = editMemo.text.toString()
@@ -129,7 +131,6 @@ class EditActivity : AppCompatActivity() {
 
         // キャンセルボタン押下時
         cancel_button.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
             finish()
         }
     }
