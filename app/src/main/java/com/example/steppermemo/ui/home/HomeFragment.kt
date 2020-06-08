@@ -33,6 +33,7 @@ class HomeFragment : Fragment() {
     // Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
     private lateinit var realm: Realm
     private lateinit var adapter: HomeFragmentRecyclerViewAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
